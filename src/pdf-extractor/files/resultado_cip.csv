@@ -1,4 +1,4 @@
-itens_fatura;unid;quant;preco_unit_com_tributos;valor;pis/cofins;base_calc_icms;aliquota_icms;icms;tarifa_unit;percentual_cip
+itens_fatura;unid;quant;preco_unitario_br;valor;pis/cofins;base_calc_icms;aliquota_icms;icms;tarifa_unit;percentual_cip
 Energia Ativa Fornecida TE;kWh;324;0.3587;116.22;4.57;116.22;20.0;23.24;0.27291;0.0
 Energia Ativa Fornecida TUSD;kWh;324;0.59065;191.37;7.54;191.37;20.0;38.27;0.44929;0.0
 Energia Atv Inj TE mUC 09/2024 mPT;kWh;294;-0.35874;-105.47;-4.15;-105.47;20.0;-21.09;0.27291;0.0
