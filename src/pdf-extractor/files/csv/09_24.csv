@@ -1,10 +1,10 @@
-Itens_de_Fatura;Unid;Quant;Preço_unit_(R$)_com_tributos;Valor_(R$);PIS/COFINS;Base_Calc_ICMS_(R$);Alíquota_ICMS;ICMS;Tarifa_unit_(R$);Valor_(R$)_convertido;percentual_cip
-Energia Ativa Fornecida TE;kWh;324;0,35870;116,22;4,57;116,22;20,00%;23,24;0,27291;116.22;
-Energia Ativa Fornecida TUSD;kWh;324;0,59065;191,37;7,54;191,37;20,00%;38,27;0,44929;191.37;
-Energia Atv Inj TE mUC 09/2024 mPT;kWh;294;0,35874-;105,47-;4,15-;105,47-;20,00%;21,09-;0,27291;-105.47;
-Energia Atv Inj TUSD mUC 09/2024 mPT;kWh;294;0,47255-;138,93-;6,84-;0,00;0,00%;0,00;0,44929;-138.93;
-Adic Band Vermelha Comp;kWh;294;0,01997-;5,87-;0,23-;5,87-;20,00%;1,17-;0,01525;-5.87;
-Adicional Band Vermelha;kWh;324;0,01994;6,46;0,24;6,46;20,00%;1,29;0,01522;6.46;
-CIP ILUM PUB PREF MUNICIPAL;;;;68,87;0,00;0,00;0,00%;0,00;;68.87;22.390194739750964
-Juros Moratórios;;;;0,54;0,00;0,00;0,00%;0,00;;0.54;
-Multa;;;;1,26;0,00;0,00;0,00%;0,00;;1.26;
+Itens_de_Fatura;Unid;Quant;Preço_unit_(R$)_com_tributos;Valor_(R$);PIS/COFINS;Base_Calc_ICMS_(R$);Alíquota_ICMS;ICMS;Tarifa_unit_(R$);percentual_cip
+Energia Ativa Fornecida TE;kWh;324;0,35870;116.22;4,57;116,22;20,00%;23,24;0,27291;
+Energia Ativa Fornecida TUSD;kWh;324;0,59065;191.37;7,54;191,37;20,00%;38,27;0,44929;
+Energia Atv Inj TE mUC 09/2024 mPT;kWh;294;0,35874-;-105.47;4,15-;105,47-;20,00%;21,09-;0,27291;
+Energia Atv Inj TUSD mUC 09/2024 mPT;kWh;294;0,47255-;-138.93;6,84-;0,00;0,00%;0,00;0,44929;
+Adic Band Vermelha Comp;kWh;294;0,01997-;-5.87;0,23-;5,87-;20,00%;1,17-;0,01525;
+Adicional Band Vermelha;kWh;324;0,01994;6.46;0,24;6,46;20,00%;1,29;0,01522;
+CIP ILUM PUB PREF MUNICIPAL;;;;68.87;0,00;0,00;0,00%;0,00;;22.390194739750964
+Juros Moratórios;;;;0.54;0,00;0,00;0,00%;0,00;;
+Multa;;;;1.26;0,00;0,00;0,00%;0,00;;

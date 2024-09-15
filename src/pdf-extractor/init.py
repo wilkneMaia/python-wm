@@ -16,6 +16,9 @@ class PDFExtractor:
         self.configs = configs
 
     def start(self) -> None:
+        """
+        Inicia o processo de extração do PDF e cálculo do percentual de CIP.
+        """
         logging.info(f"Iniciando processamento do PDF - {self.file_name}")
         header = self.get_table_data(self.configs["table_areas"], self.configs["columns"], self.configs["fix"])
 
@@ -34,9 +37,6 @@ class PDFExtractor:
             logging.info("DataFrame Filtrado:")
             logging.info(filtered_df.head(20))
 
-            # Listar as colunas disponíveis para facilitar o debug
-            logging.info(f"Colunas disponíveis: {filtered_df.columns.tolist()}")
-
             # Verifique se a coluna "Valor_(R$)" está presente
             if 'Valor_(R$)' not in filtered_df.columns:
                 raise KeyError(f"A coluna 'Valor_(R$)' não foi encontrada no DataFrame após a limpeza. Colunas disponíveis: {filtered_df.columns.tolist()}")
@@ -48,11 +48,14 @@ class PDFExtractor:
             logging.info(f"Salvando CSV - {self.file_name}")
             self.save_csv(filtered_df, self.file_name)
         else:
-            logging.error(f"Erro ao processar o arquivo {self.file_name}. Nenhuma tabela foi encontrada.")  # <- indented corretamente
+            logging.error(f"Erro ao processar o arquivo {self.file_name}. Nenhuma tabela foi encontrada.")
 
     def get_table_data(self, table_areas: str, table_columns: str, fix: bool = True) -> Optional[pd.DataFrame]:
         """
         Extrai dados de uma tabela do PDF usando a biblioteca Camelot.
+
+        Returns:
+            pd.DataFrame: Tabela extraída do PDF.
         """
         tables = camelot.read_pdf(
             self.path,
@@ -69,6 +72,9 @@ class PDFExtractor:
         return None
 
     def save_csv(self, df: pd.DataFrame, file_name: str) -> None:
+        """
+        Salva o DataFrame em um arquivo CSV.
+        """
         os.makedirs(self.csv_path, exist_ok=True)
         path = os.path.join(self.csv_path, f"{file_name}.csv")
         df.to_csv(path, sep=";", index=False)
@@ -84,10 +90,7 @@ class PDFExtractor:
             pd.DataFrame: O DataFrame limpo e com o cabeçalho corrigido.
         """
         # Remover linhas vazias ou indesejadas
-        df = df.dropna(how="all")  # Remove linhas onde todos os valores são NaN
-
-        # Verificar se há cabeçalhos duplicados, linhas extras etc. e definir o cabeçalho real
-        df = df.reset_index(drop=True)
+        df = df.dropna(how="all").reset_index(drop=True)  # Remove linhas onde todos os valores são NaN
 
         # Tentar encontrar a linha que representa o cabeçalho real
         first_valid_index = df.index[df.notnull().all(axis=1)][0]  # Encontra a primeira linha não-nula
@@ -105,8 +108,7 @@ class PDFExtractor:
         # Remover colunas ou linhas indesejadas
         df = df[~df.apply(lambda row: row.astype(str).str.contains(';;;|com tributos|ICMS', case=False).any(), axis=1)]
 
-        df = df.reset_index(drop=True)
-        return df
+        return df.reset_index(drop=True)
 
     def filter_until_subtotal(self, df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -117,41 +119,65 @@ class PDFExtractor:
 
     def tratar_valores_monetarios(self, df: pd.DataFrame, coluna: str) -> pd.DataFrame:
         """
-        Trata valores monetários.
+        Função para tratar valores monetários.
+        Converte valores com vírgula como separador decimal para float internamente,
+        mantém o valor como float para operações de cálculo e depois formata para exibição.
         """
         # Verifique se a coluna está presente
         if coluna not in df.columns:
             raise KeyError(f"A coluna '{coluna}' não foi encontrada no DataFrame.")
 
-        df[coluna] = df[coluna].astype(str).str.strip()
+        # Limpar os valores na coluna e ajustar valores negativos no formato correto
+        df[coluna] = df[coluna].astype(str).str.strip().apply(self.ajustar_valor_negativo)
 
-        def converter_valor(valor: str) -> float:
-            valor = valor.strip()
-            if valor.endswith('-'):
-                return -float(valor.replace('.', '').replace(',', '.').replace('-', ''))
-            return float(valor.replace('.', '').replace(',', '.'))
+        # Converter os valores da coluna diretamente para float, mantendo a vírgula no final
+        df[coluna] = df[coluna].apply(lambda x: float(x.replace('.', '').replace(',', '.')))
 
-        df[f'{coluna}_convertido'] = df[coluna].apply(converter_valor)
         return df
+
+    def ajustar_valor_negativo(self, valor: str) -> str:
+        """
+        Ajusta valores como '105,47-' para '-105,47'.
+
+        Args:
+            valor (str): O valor monetário em string, possivelmente com um '-' no final.
+
+        Returns:
+            str: O valor ajustado com o sinal de negativo no início.
+        """
+        valor = valor.strip()  # Remover espaços em branco
+        if valor.endswith('-'):
+            return '-' + valor[:-1]  # Remover o '-' do final e adicioná-lo no início
+        return valor
 
     def calculate_cip_percentage(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Calcula o percentual de CIP ILUM PUB PREF MUNICIPAL sobre a soma de TE e TUSD.
         """
+
+        # Tratar a coluna 'Valor_(R$)' antes de fazer a soma
         df = self.tratar_valores_monetarios(df, 'Valor_(R$)')
-        coluna_convertida = 'Valor_(R$)_convertido'
 
-        valor_te = df.loc[df['Itens_de_Fatura'].str.contains('Energia Ativa Fornecida TE', case=False), coluna_convertida].sum()
-        valor_tusd = df.loc[df['Itens_de_Fatura'].str.contains('Energia Ativa Fornecida TUSD', case=False), coluna_convertida].sum()
+        # Obter valores de TE e TUSD
+        valor_te = df.loc[df['Itens_de_Fatura'].str.contains('Energia Ativa Fornecida TE', case=False), 'Valor_(R$)'].sum()
+        valor_tusd = df.loc[df['Itens_de_Fatura'].str.contains('Energia Ativa Fornecida TUSD', case=False), 'Valor_(R$)'].sum()
 
+        # Somar os dois valores
         valor_total = valor_te + valor_tusd
-        logging.info(f"Somatória dos valores TE e TUSD: {valor_total}")
+        logging.info(f"Somatória dos valores TE e TUSD: {valor_total} (tipo: {type(valor_total)})")
 
-        valor_cip = df.loc[df['Itens_de_Fatura'].str.contains('CIP ILUM PUB PREF MUNICIPAL', case=False), coluna_convertida].sum()
+        # Obter o valor de CIP
+        valor_cip = df.loc[df['Itens_de_Fatura'].str.contains('CIP ILUM PUB PREF MUNICIPAL', case=False), 'Valor_(R$)'].sum()
 
-        percentual_cip = (valor_cip / valor_total) * 100 if valor_total > 0 else 0
+        # Garantir que valor_total seja float e realizar o cálculo de percentual
+        if valor_total > 0:
+            percentual_cip = (valor_cip / valor_total) * 100
+        else:
+            percentual_cip = 0
+
         logging.info(f"Percentual de CIP ILUM PUB PREF MUNICIPAL: {percentual_cip:.2f}%")
 
+        # Criar a coluna 'percentual_cip' no DataFrame e preencher o valor apenas na linha de CIP
         df['percentual_cip'] = None
         df.loc[df['Itens_de_Fatura'].str.contains('CIP ILUM PUB PREF MUNICIPAL', case=False), 'percentual_cip'] = percentual_cip
 
