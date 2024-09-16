@@ -1,0 +1,20 @@
+0;1;2;3;4;5;6;7;8;9
+;;;DESCRIÇÃO DO FATURAMENTO;;;;;;
+Itens de Fatura;Unid;Quant;Preço unit (R$);Valor (R$);PIS/COFINS;Base Calc;Alíquota;ICMS;Tarifa
+;;;com tributos;;;ICMS (R$);ICMS;;unit (R$)
+Energia Ativa Fornecida TE;kWh;324;0,35034;113,51;2,40;113,51;20,00%;22,70;0,27291
+Energia Ativa Fornecida TUSD;kWh;324;0,57685;186,90;3,96;186,90;20,00%;37,38;0,44929
+Energia Atv Inj TE mUC 08/2024 mPT;kWh;294;0,35037-;103,01-;2,18-;103,01-;20,00%;20,60-;0,27291
+Energia Atv Inj TUSD mUC 08/2024 mPT;kWh;294;0,46153-;135,69-;3,60-;0,00;0,00%;0,00;0,44929
+Adic Band Amarela Comp;kWh;294;0,01959-;5,76-;0,12-;5,76-;20,00%;1,15-;0,01532
+Adicional Band Amarela;kWh;324;0,01960;6,35;0,13;6,35;20,00%;1,27;0,01528
+CIP ILUM PUB PREF MUNICIPAL;;;;57,48;0,00;0,00;0,00%;0,00;
+Multa;;;;1,29;0,00;0,00;0,00%;0,00;
+Subtotal Faturamento;;;;62,30;;;;;
+Subtotal Outros;;;;58,77;;;;;
+;;;;121,07;0,59;197,99;;39,60;
+TOTAL;;;;;;;;;
+;EQUIPAMENTOS DE MEDIÇÃO E CONSUMO NO PERIODO;;;;;;;;
+N° MedidorPHorário/Segmento;Data Leitura;Leitura;Data Leitura;;Leitura;Fator Multiplicador;;Consumo kWh;N° Dias
+6938979-ELE-728HFP;06/07/2024;92750;06/08/2024;;95990;10;;3240;32
+6938979-ELE-728HFP INJ;06/07/2024;122420;06/08/2024;;126230;10;;3810;32

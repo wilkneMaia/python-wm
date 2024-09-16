@@ -1,0 +1,13 @@
+0;1;2;3;4;5;6;7;8;9
+Itens de Fatura;Unid;Quant;Preço unit (R$);Valor (R$);PIS/COFINS;Base Calc;Alíquota;ICMS;Tarifa
+;;;com tributos;;;ICMS (R$);ICMS;;unit (R$)
+Custo de Disponibi REN482/12 TE;kWh;;300,28400;;8,520,34;0,00;0,00%;0,00;0,27291
+Custo de Disponib REN482/12 TUSD;kWh;;300,46800;14,04;0,57;0,00;0,00%;0,00;0,44929
+Adicional Band Amarela;kWh;;300,01300;;0,390,01;0,00;0,00%;0,00;0,01267
+Debito De Pequenos Valores;;;;62,81;0,00;0,00;0,00%;0,00;
+Subtotal Faturamento;;;;22,95;;;;;
+Subtotal Outros;;;;62,81;;;;;
+TOTAL;;;;85,76;0,92;0,00;;0,00;
+EQUIPAMENTOS DE MEDIÇÃO E CONSUMO NO PERIODO;;;;;;;;;
+N° MedidorPHorário/Segmento;Data Leitura;Leitura;Data Leitura;Leitura;;Fator Multiplicador;;Consumo kWh;N° Dias
+11665323-ELE-727HFP;21JUN;380;22JUL;380;;10;;00;32
