@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 print(matplotlib.get_backend())
 
 file_name = "09_24"
-path = os.path.abspath(f"src/pdf-extractor/files/pdf/{file_name}.pdf")
+path = os.path.abspath(f"src/pdf-extractor/files/pdf/coelce/{file_name}.pdf")
 
 tables = camelot.read_pdf(
     path,

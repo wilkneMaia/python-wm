@@ -53,7 +53,8 @@ class PDFExtractor:
         """
         Salva o DataFrame em um arquivo CSV.
         """
-        os.makedirs(self.csv_path, exist_ok=True)
+        if not os.path.exists(self.csv_path):
+            os.makedirs(self.csv_path, exist_ok=True)
         path = os.path.join(self.csv_path, f"{file_name}.csv")
         df.to_csv(path, sep=";", index=False)
 
